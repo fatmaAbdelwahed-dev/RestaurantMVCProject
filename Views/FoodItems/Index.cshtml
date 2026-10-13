@@ -1,0 +1,114 @@
+﻿@model IEnumerable<RestaurantProject.Models.FoodItem>
+
+@{
+    ViewData["Title"] = "Food Items";
+}
+
+<div class="admin-page-header">
+    <div>
+        <span class="admin-label">Admin Panel</span>
+        <h2>Manage Food Items</h2>
+        <p>Add meals, update prices, control availability, and manage the restaurant menu.</p>
+    </div>
+
+    <a asp-action="Create" class="btn btn-primary admin-create-btn">
+        + Add Food Item
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <div class="empty-icon">🍽️</div>
+        <h4>No food items yet</h4>
+        <p>Add your first meal to start building the restaurant menu.</p>
+        <a asp-action="Create" class="btn btn-primary">Create Food Item</a>
+    </div>
+}
+else
+{
+    <div class="admin-table-card">
+        <table class="table admin-table align-middle">
+            <thead>
+                <tr>
+                    <th>Food</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="food-admin-cell">
+                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                {
+                                    <img src="@item.ImageUrl" alt="@item.Name" />
+                                }
+                                else
+                                {
+                                    <div class="food-admin-placeholder">
+                                        🍴
+                                    </div>
+                                }
+
+                                <div>
+                                    <strong>@item.Name</strong>
+                                    <small>
+                                        @if (!string.IsNullOrEmpty(item.Description))
+                                        {
+                                            @(item.Description.Length > 55 ? item.Description.Substring(0, 55) + "..." : item.Description)
+                                        }
+                                        else
+                                        {
+                                            <span>No description</span>
+                                        }
+                                    </small>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="category-pill">
+                                @item.Category?.Name
+                            </span>
+                        </td>
+
+                        <td>
+                            <strong class="price-text">@item.Price.ToString("0.00") EGP</strong>
+                        </td>
+
+                        <td>
+                            @if (item.IsAvailable)
+                            {
+                                <span class="status-badge status-available">Available</span>
+                            }
+                            else
+                            {
+                                <span class="status-badge status-unavailable">Not Available</span>
+                            }
+                        </td>
+
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@item.FoodItemId" class="btn btn-sm btn-soft-info">
+                                Details
+                            </a>
+
+                            <a asp-action="Edit" asp-route-id="@item.FoodItemId" class="btn btn-sm btn-soft-warning">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete" asp-route-id="@item.FoodItemId" class="btn btn-sm btn-soft-danger">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

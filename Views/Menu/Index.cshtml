@@ -1,0 +1,97 @@
+﻿@model IEnumerable<RestaurantProject.Models.FoodItem>
+
+@{
+    ViewData["Title"] = "Menu";
+}
+
+<section class="menu-image-hero mb-5">
+    <div class="menu-image-overlay">
+        <div>
+            <span class="dashboard-welcome">Restaurant Menu</span>
+            <h1>Discover Our Delicious Menu</h1>
+            <p>
+                Choose from fresh meals, tasty burgers, pizzas, snacks, drinks and desserts.
+                Pick your favorite meal and order it easily online.
+            </p>
+        </div>
+
+        <div class="menu-hero-badge">
+            <span>🍽️</span>
+            <strong>Fresh • Hot • Fast</strong>
+        </div>
+    </div>
+</section>
+
+<div class="menu-page-header">
+    <div>
+        <span class="admin-label">Available Meals</span>
+        <h2>Our Food Menu</h2>
+        <p>Browse all available food items and place your order.</p>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <div class="empty-icon">🍽️</div>
+        <h4>No food items available</h4>
+        <p>There are no available meals right now. Please check again later.</p>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="menu-food-card h-100">
+                    <div class="menu-food-image-wrapper">
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <img src="@item.ImageUrl" alt="@item.Name" class="menu-food-image" />
+                        }
+                        else
+                        {
+                            <div class="menu-food-placeholder">
+                                <div class="placeholder-icon">🍽️</div>
+                                <span>No Image Available</span>
+                            </div>
+                        }
+
+                        <span class="menu-category-badge">
+                            @item.Category?.Name
+                        </span>
+                    </div>
+
+                    <div class="menu-food-body">
+                        <div class="menu-food-title-row">
+                            <h4>@item.Name</h4>
+                            <strong>@item.Price.ToString("0.00") EGP</strong>
+                        </div>
+
+                        <p class="menu-food-description">
+                            @if (!string.IsNullOrEmpty(item.Description))
+                            {
+                                @(item.Description.Length > 85 ? item.Description.Substring(0, 85) + "..." : item.Description)
+                            }
+                            else
+                            {
+                                <span>No description available.</span>
+                            }
+                        </p>
+
+                        <div class="menu-food-actions">
+                            <a asp-action="Details" asp-route-id="@item.FoodItemId" class="btn btn-outline-dark">
+                                Details
+                            </a>
+
+                            <a asp-controller="Orders" asp-action="Create" asp-route-foodItemId="@item.FoodItemId" class="btn btn-primary">
+                                Order Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

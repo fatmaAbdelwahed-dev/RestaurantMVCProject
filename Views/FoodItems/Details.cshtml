@@ -1,0 +1,74 @@
+﻿@model RestaurantProject.Models.FoodItem
+
+@{
+    ViewData["Title"] = "Food Item Details";
+}
+
+<div class="details-page-wrapper food-details-admin">
+    <div class="form-header">
+        <span class="admin-label">Food Management</span>
+        <h2>Food Item Details</h2>
+        <p>View complete information about this menu item.</p>
+    </div>
+
+    <div class="food-info-card">
+        <div class="food-info-image">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" alt="@Model.Name" />
+            }
+            else
+            {
+                <div class="details-placeholder">
+                    No Image
+                </div>
+            }
+        </div>
+
+        <div class="food-info-content">
+            <span class="category-pill">@Model.Category?.Name</span>
+
+            <h3>@Model.Name</h3>
+
+            <p class="food-info-description">
+                @if (!string.IsNullOrEmpty(Model.Description))
+                {
+                    @Model.Description
+                }
+                else
+                {
+                    <span class="text-muted">No description provided.</span>
+                }
+            </p>
+
+            <div class="food-meta-grid">
+                <div>
+                    <span>Price</span>
+                    <strong>@Model.Price.ToString("0.00") EGP</strong>
+                </div>
+
+                <div>
+                    <span>Status</span>
+                    @if (Model.IsAvailable)
+                    {
+                        <strong class="text-success">Available</strong>
+                    }
+                    else
+                    {
+                        <strong class="text-danger">Not Available</strong>
+                    }
+                </div>
+            </div>
+
+            <div class="form-actions mt-4">
+                <a asp-action="Edit" asp-route-id="@Model.FoodItemId" class="btn btn-primary">
+                    Edit Food Item
+                </a>
+
+                <a asp-action="Index" class="btn btn-outline-dark">
+                    Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

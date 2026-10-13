@@ -1,0 +1,82 @@
+﻿@model RestaurantProject.Models.FoodItem
+
+@{
+    ViewData["Title"] = "Create Food Item";
+}
+
+<div class="form-page-wrapper">
+    <div class="form-header">
+        <span class="admin-label">Food Management</span>
+        <h2>Create Food Item</h2>
+        <p>Add a new meal to your restaurant menu.</p>
+    </div>
+
+    <div class="styled-form-card">
+        <form asp-action="Create" method="post" class="clean-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="mb-4">
+                        <label asp-for="Name" class="form-label">Food Name</label>
+                        <input asp-for="Name" class="form-control" placeholder="Example: Chicken Pizza" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Description" class="form-label">Description</label>
+                        <textarea asp-for="Description" class="form-control" rows="4" placeholder="Write a short description"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="ImageUrl" class="form-label">Image URL</label>
+                        <input asp-for="ImageUrl" class="form-control" placeholder="Paste image URL here" />
+                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="side-form-box">
+                        <div class="mb-4">
+                            <label asp-for="Price" class="form-label">Price</label>
+                            <input asp-for="Price" class="form-control" placeholder="Example: 150" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="CategoryId" class="form-label">Category</label>
+                            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId">
+                                <option value="">-- Select Category --</option>
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check availability-check">
+                            <input asp-for="IsAvailable" class="form-check-input" />
+                            <label asp-for="IsAvailable" class="form-check-label">
+                                Available for customers
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions mt-4">
+                <button type="submit" class="btn btn-primary">
+                    Create Food Item
+                </button>
+
+                <a asp-action="Index" class="btn btn-outline-dark">
+                    Back to List
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,55 @@
+﻿@model RestaurantProject.Models.FoodItem
+
+@{
+    ViewData["Title"] = "Food Details";
+}
+
+<div class="menu-details-wrapper">
+    <div class="menu-details-card">
+        <div class="menu-details-image-side">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" alt="@Model.Name" />
+            }
+            else
+            {
+                <div class="menu-details-placeholder">
+                    <div>🍽️</div>
+                    <span>No Image Available</span>
+                </div>
+            }
+        </div>
+
+        <div class="menu-details-content">
+            <span class="category-pill">@Model.Category?.Name</span>
+
+            <h1>@Model.Name</h1>
+
+            <p>
+                @if (!string.IsNullOrEmpty(Model.Description))
+                {
+                    @Model.Description
+                }
+                else
+                {
+                    <span>No description available for this food item.</span>
+                }
+            </p>
+
+            <div class="menu-details-price-box">
+                <span>Price</span>
+                <strong>@Model.Price.ToString("0.00") EGP</strong>
+            </div>
+
+            <div class="menu-details-actions">
+                <a asp-controller="Orders" asp-action="Create" asp-route-foodItemId="@Model.FoodItemId" class="btn btn-primary btn-lg">
+                    Order Now
+                </a>
+
+                <a asp-action="Index" class="btn btn-outline-dark btn-lg">
+                    Back to Menu
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

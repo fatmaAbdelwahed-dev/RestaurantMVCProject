@@ -1,0 +1,82 @@
+﻿@model RestaurantProject.Models.FoodItem
+
+@{
+    ViewData["Title"] = "Edit Food Item";
+}
+
+<div class="form-page-wrapper">
+    <div class="form-header">
+        <span class="admin-label">Food Management</span>
+        <h2>Edit Food Item</h2>
+        <p>Update meal details, price, image, category, or availability.</p>
+    </div>
+
+    <div class="styled-form-card">
+        <form asp-action="Edit" method="post" class="clean-form">
+            <input type="hidden" asp-for="FoodItemId" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="mb-4">
+                        <label asp-for="Name" class="form-label">Food Name</label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Description" class="form-label">Description</label>
+                        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="ImageUrl" class="form-label">Image URL</label>
+                        <input asp-for="ImageUrl" class="form-control" />
+                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="side-form-box">
+                        <div class="mb-4">
+                            <label asp-for="Price" class="form-label">Price</label>
+                            <input asp-for="Price" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="CategoryId" class="form-label">Category</label>
+                            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check availability-check">
+                            <input asp-for="IsAvailable" class="form-check-input" />
+                            <label asp-for="IsAvailable" class="form-check-label">
+                                Available for customers
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions mt-4">
+                <button type="submit" class="btn btn-primary">
+                    Save Changes
+                </button>
+
+                <a asp-action="Index" class="btn btn-outline-dark">
+                    Back to List
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

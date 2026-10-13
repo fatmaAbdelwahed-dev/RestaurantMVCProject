@@ -1,0 +1,84 @@
+﻿@model RestaurantProject.Models.CreateOrderViewModel
+
+@{
+    ViewData["Title"] = "Place Order";
+}
+
+<div class="order-page-header">
+    <span class="admin-label">Order Now</span>
+    <h1>Place Your Order</h1>
+    <p>Confirm your meal quantity and delivery information.</p>
+</div>
+
+<div class="order-create-wrapper">
+    <div class="order-create-card">
+        <div class="order-product-side">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" alt="@Model.FoodName" class="order-product-image" />
+            }
+            else
+            {
+                <div class="order-product-placeholder">
+                    <div>🍽️</div>
+                    <span>No Image Available</span>
+                </div>
+            }
+
+            <div class="order-product-info">
+                <h2>@Model.FoodName</h2>
+                <p>Selected meal from Mero Restaurant menu.</p>
+
+                <div class="order-price-box">
+                    <span>Unit Price</span>
+                    <strong>@Model.Price.ToString("0.00") EGP</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-form-side">
+            <form asp-action="Create" method="post">
+                <input type="hidden" asp-for="FoodItemId" />
+                <input type="hidden" asp-for="FoodName" />
+                <input type="hidden" asp-for="Price" />
+                <input type="hidden" asp-for="ImageUrl" />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-4">
+                    <label asp-for="Quantity" class="form-label fw-bold"></label>
+                    <input asp-for="Quantity" class="form-control" />
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="DeliveryAddress" class="form-label fw-bold">Delivery Address</label>
+                    <textarea asp-for="DeliveryAddress" class="form-control" rows="4" placeholder="Write your full delivery address"></textarea>
+                    <span asp-validation-for="DeliveryAddress" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Notes" class="form-label fw-bold">Notes</label>
+                    <textarea asp-for="Notes" class="form-control" rows="3" placeholder="Any special requests?"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+
+                <div class="order-form-actions">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Confirm Order
+                    </button>
+
+                    <a asp-controller="Menu" asp-action="Index" class="btn btn-outline-dark btn-lg">
+                        Back to Menu
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

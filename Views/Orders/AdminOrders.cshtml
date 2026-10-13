@@ -1,0 +1,97 @@
+﻿@model IEnumerable<RestaurantProject.Models.Order>
+
+@{
+    ViewData["Title"] = "Admin Orders";
+}
+
+<div class="admin-page-header">
+    <div>
+        <span class="admin-label">Admin Panel</span>
+        <h2>Manage Orders</h2>
+        <p>Review customer orders and update order status.</p>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <div class="empty-icon">📦</div>
+        <h4>No orders found</h4>
+        <p>Customer orders will appear here once they start ordering.</p>
+    </div>
+}
+else
+{
+    <div class="admin-table-card">
+        <table class="table admin-table align-middle">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Items</th>
+                    <th>Update</th>
+                    <th class="text-end">Details</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>
+                            <strong>@order.User?.FullName</strong>
+                            <br />
+                            <small class="text-muted">@order.User?.Email</small>
+                        </td>
+
+                        <td>@order.OrderDate.ToString("dd/MM/yyyy hh:mm tt")</td>
+
+                        <td>
+                            <strong class="price-text">@order.TotalAmount.ToString("0.00") EGP</strong>
+                        </td>
+
+                        <td>
+                            <span class="order-status status-@order.Status.ToLower()">
+                                @order.Status
+                            </span>
+                        </td>
+
+                        <td>
+                            @foreach (var item in order.OrderItems)
+                            {
+                                <div class="small-order-item">
+                                    @item.FoodItem?.Name × @item.Quantity
+                                </div>
+                            }
+                        </td>
+
+                        <td>
+                            <form asp-action="UpdateStatus" method="post" class="status-form">
+                                <input type="hidden" name="orderId" value="@order.OrderId" />
+
+                                <select name="status" class="form-control form-control-sm mb-2">
+                                    <option value="Pending" selected="@(order.Status == "Pending")">Pending</option>
+                                    <option value="Preparing" selected="@(order.Status == "Preparing")">Preparing</option>
+                                    <option value="Delivered" selected="@(order.Status == "Delivered")">Delivered</option>
+                                    <option value="Cancelled" selected="@(order.Status == "Cancelled")">Cancelled</option>
+                                </select>
+
+                                <button type="submit" class="btn btn-sm btn-primary w-100">
+                                    Update
+                                </button>
+                            </form>
+                        </td>
+
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-sm btn-soft-info">
+                                Details
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

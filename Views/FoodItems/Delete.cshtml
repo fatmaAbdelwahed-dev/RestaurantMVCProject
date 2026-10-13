@@ -1,0 +1,58 @@
+﻿@model RestaurantProject.Models.FoodItem
+
+@{
+    ViewData["Title"] = "Delete Food Item";
+}
+
+<div class="details-page-wrapper">
+    <div class="form-header">
+        <span class="admin-label danger-label">Delete Action</span>
+        <h2>Delete Food Item</h2>
+        <p>Please confirm before deleting this meal from the menu.</p>
+    </div>
+
+    <div class="delete-food-card">
+        <div class="delete-food-image">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" alt="@Model.Name" />
+            }
+            else
+            {
+                <div class="delete-food-placeholder">🍽️</div>
+            }
+        </div>
+
+        <div class="delete-food-content">
+            <div class="delete-icon">⚠️</div>
+
+            <h3>Are you sure?</h3>
+
+            <p>
+                You are about to delete
+                <strong>@Model.Name</strong>
+                from the restaurant menu.
+            </p>
+
+            <div class="delete-info">
+                <strong>Category:</strong> @Model.Category?.Name
+                <br />
+                <strong>Price:</strong> @Model.Price.ToString("0.00") EGP
+            </div>
+
+            <form asp-action="Delete" method="post" class="clean-form delete-form">
+                <input type="hidden" asp-for="FoodItemId" />
+
+                <div class="form-actions justify-content-center">
+                    <button type="submit" class="btn btn-danger">
+                        Yes, Delete
+                    </button>
+
+                    <a asp-action="Index" class="btn btn-outline-dark">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

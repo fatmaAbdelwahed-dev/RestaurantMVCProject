@@ -1,0 +1,77 @@
+﻿@model IEnumerable<RestaurantProject.Models.Category>
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<div class="admin-page-header">
+    <div>
+        <span class="admin-label">Admin Panel</span>
+        <h2>Manage Categories</h2>
+        <p>Create, edit, and organize the restaurant menu categories.</p>
+    </div>
+
+    <a asp-action="Create" class="btn btn-primary admin-create-btn">
+        + Add Category
+    </a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <div class="empty-icon">📂</div>
+        <h4>No categories yet</h4>
+        <p>Start by creating your first menu category.</p>
+        <a asp-action="Create" class="btn btn-primary">Create Category</a>
+    </div>
+}
+else
+{
+    <div class="admin-table-card">
+        <table class="table admin-table">
+            <thead>
+                <tr>
+                    <th>Category Name</th>
+                    <th>Description</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <strong>@item.Name</strong>
+                        </td>
+
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.Description))
+                            {
+                                @item.Description
+                            }
+                            else
+                            {
+                                <span class="text-muted">No description</span>
+                            }
+                        </td>
+
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@item.CategoryId" class="btn btn-sm btn-soft-info">
+                                Details
+                            </a>
+
+                            <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-sm btn-soft-warning">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-sm btn-soft-danger">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
